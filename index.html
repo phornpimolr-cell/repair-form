@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>แบบฟอร์มเสนอซ่อม</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap');
+:root{
+  --blue:#1a56db;--blue-d:#1241a8;--blue-l:#e8f0fe;
+  --green:#166534;--green-l:#dcfce7;
+  --amber:#92400e;--amber-l:#fef3c7;
+  --red:#dc2626;--red-l:#fee2e2;
+  --border:#e5e7eb;--bg:#f3f4f6;--bg2:#f9fafb;
+  --text:#111827;--muted:#6b7280;
+  --r:10px;--r-s:7px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;min-height:100vh}
+
+/* ── SCREENS ── */
+.scr{display:none;min-height:100vh}
+.scr.on{display:flex}
+
+/* ══════════ LOGIN ══════════ */
+#s-login{
+  align-items:center;justify-content:center;padding:1.5rem;
+  background:linear-gradient(150deg,#1e3a8a 0%,#1d4ed8 55%,#3b82f6 100%)
+}
+.login-box{
+  background:#fff;border-radius:20px;padding:2rem 1.75rem;
+  width:100%;max-width:480px;
+  box-shadow:0 24px 60px rgba(0,0,0,.28)
+}
+.lhd{text-align:center;margin-bottom:2rem}
+.lhd-ico{
+  width:68px;height:68px;background:var(--blue-l);border-radius:18px;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:32px;margin-bottom:.75rem
+}
+.lhd h1{font-size:20px;font-weight:700}
+.lhd p{font-size:13px;color:var(--muted);margin-top:3px}
+
+.sec-lbl{font-size:12px;font-weight:600;color:var(--muted);margin-bottom:.6rem;display:block;letter-spacing:.04em;text-transform:uppercase}
+
+/* user cards grid */
+.ugrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:1.5rem}
+.ucard{
+  border:2px solid var(--border);border-radius:var(--r);
+  padding:1rem .75rem;text-align:center;cursor:pointer;
+  transition:border-color .15s,background .15s,transform .1s;background:#fff
+}
+.ucard:hover{border-color:#93c5fd;background:var(--blue-l);transform:translateY(-2px)}
+.ucard.sel{border-color:var(--blue);background:var(--blue-l)}
+.ucard:active{transform:scale(.97)}
+.uav{
+  width:48px;height:48px;border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:18px;font-weight:700;margin-bottom:.5rem;
+  background:var(--blue-l);color:var(--blue-d)
+}
+.uname{font-size:13px;font-weight:600;line-height:1.3}
+
+/* add/manage users */
+.link-btn{
+  background:none;border:none;color:var(--blue);
+  font-size:13px;font-family:'Sarabun',sans-serif;
+  cursor:pointer;text-decoration:underline;padding:0
+}
+
+.btn-login{
+  width:100%;padding:13px;background:var(--blue);color:#fff;
+  border:none;border-radius:var(--r);font-size:16px;font-weight:600;
+  font-family:'Sarabun',sans-serif;cursor:pointer;
+  transition:background .15s;margin-top:1rem
+}
+.btn-login:hover{background:var(--blue-d)}
+.btn-login:disabled{background:#93c5fd;cursor:not-allowed}
+
+/* manage users panel */
+.manage-panel{
+  display:none;margin-top:1rem;padding:1rem;
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--r)
+}
+.manage-panel.on{display:block}
+.user-row-m{
+  display:flex;align-items:center;gap:10px;
+  padding:7px 0;border-bottom:1px solid var(--border)
+}
+.user-row-m:last-child{border-bottom:none}
+.user-row-m span{flex:1;font-size:14px}
+.del-u{background:none;border:none;color:#fca5a5;cursor:pointer;font-size:18px;transition:color .15s}
+.del-u:hover{color:var(--red)}
+.add-user-row{display:flex;gap:8px;margin-top:10px}
+.add-user-row input{flex:1;padding:8px 10px;border:1px solid var(--border);border-radius:var(--r-s);font-size:14px;font-family:'Sarabun',sans-serif}
+.add-user-row input:focus{outline:none;border-color:var(--blue)}
+
+/* ══════════ APP ══════════ */
+#s-app{flex-direction:column}
+
+.topbar{
+  background:var(--blue);color:#fff;height:54px;
+  display:flex;align-items:center;padding:0 1rem;gap:12px;
+  position:sticky;top:0;z-index:100;
+  box-shadow:0 2px 8px rgba(0,0,0,.15)
+}
+.tb-title{font-size:15px;font-weight:600;flex:1}
+.tb-user{
+  display:flex;align-items:center;gap:8px;
+  padding:5px 10px;border-radius:var(--r-s);cursor:pointer;
+  transition:background .15s
+}
+.tb-user:hover{background:rgba(255,255,255,.18)}
+.tb-av{
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(255,255,255,.25);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:13px;flex-shrink:0
+}
+.tb-name{font-size:13px;font-weight:500}
+.tb-out{font-size:11px;opacity:.6;margin-left:2px}
+
+.tabbar{
+  background:#fff;border-bottom:1px solid var(--border);
+  display:flex;overflow-x:auto;position:sticky;top:54px;z-index:99
+}
+.tabbar::-webkit-scrollbar{display:none}
+.tab{
+  padding:13px 18px;font-size:14px;font-weight:500;
+  color:var(--muted);cursor:pointer;
+  border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s
+}
+.tab.on{color:var(--blue);border-bottom-color:var(--blue)}
+.tab:hover:not(.on){color:var(--text)}
+
+.page{display:none}
+.page.on{display:block}
+.wrap{max-width:860px;margin:0 auto;padding:1.25rem}
+
+/* ── cards ── */
+.card{
+  background:#fff;border:1px solid var(--border);
+  border-radius:var(--r);padding:1.25rem 1.5rem;
+  margin-bottom:1rem;
+  box-shadow:0 1px 3px rgba(0,0,0,.07)
+}
+.card-ttl{font-size:14px;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.db{background:var(--blue)}.da{background:#f59e0b}.dg{background:#22c55e}.dgr{background:#9ca3af}
+
+/* ── fields ── */
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.full{grid-column:1/-1}
+.fld label{display:block;font-size:12px;font-weight:500;color:var(--muted);margin-bottom:5px}
+.fld input,.fld select,.fld textarea{
+  width:100%;padding:9px 12px;
+  border:1px solid var(--border);border-radius:var(--r-s);
+  font-family:'Sarabun',sans-serif;font-size:14px;color:var(--text);
+  background:#fff;transition:border-color .15s,box-shadow .15s;-webkit-appearance:none
+}
+.fld input:focus,.fld select:focus,.fld textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.12)}
+.fld textarea{resize:vertical;min-height:70px}
+.fld input[readonly]{background:var(--bg2);color:var(--muted)}
+
+/* ── parts table ── */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.pt{width:100%;border-collapse:collapse;font-size:13px;min-width:510px}
+table.pt th{text-align:left;padding:7px 8px;font-size:11px;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.03em}
+table.pt td{padding:5px 6px;border-bottom:1px solid #f3f4f6;vertical-align:middle}
+table.pt tbody tr:hover td{background:#f9fafb}
+table.pt input{border:1px solid transparent;border-radius:6px;padding:5px 8px;font-size:13px;background:transparent;font-family:'Sarabun',sans-serif;color:var(--text);width:100%}
+table.pt input:hover{border-color:var(--border)}
+table.pt input:focus{outline:none;border-color:var(--blue);background:#fff;box-shadow:0 0 0 2px rgba(26,86,219,.1)}
+.nc{width:28px;color:var(--muted);font-size:11px;text-align:center}
+.qc{width:64px}
+.cc{width:74px;text-align:center}
+.dc2{width:30px;text-align:center}
+.apchk{width:18px;height:18px;accent-color:#166534;cursor:pointer}
+.delbtn{background:none;border:none;cursor:pointer;color:#d1d5db;font-size:18px;line-height:1;padding:0 2px;transition:color .15s}
+.delbtn:hover{color:var(--red)}
+.addrow{
+  display:inline-flex;align-items:center;gap:6px;margin-top:10px;
+  font-size:12px;font-weight:500;color:var(--blue);background:none;
+  border:1px dashed #93c5fd;border-radius:var(--r-s);
+  padding:5px 14px;cursor:pointer;transition:background .15s;
+  font-family:'Sarabun',sans-serif
+}
+.addrow:hover{background:var(--blue-l)}
+
+/* ── badges ── */
+.bdg{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px}
+.bdg-b{background:var(--blue-l);color:var(--blue-d)}
+.bdg-g{background:var(--green-l);color:var(--green)}
+.bdg-a{background:var(--amber-l);color:var(--amber)}
+
+/* ── buttons ── */
+.btn{
+  padding:9px 20px;border-radius:var(--r-s);font-size:14px;font-weight:500;
+  font-family:'Sarabun',sans-serif;cursor:pointer;
+  border:1px solid var(--border);background:#fff;color:var(--text);transition:all .15s
+}
+.btn:hover{background:var(--bg2)}
+.btn-p{background:var(--blue);color:#fff;border-color:var(--blue)}
+.btn-p:hover{background:var(--blue-d)}
+.btn-s{background:#166534;color:#fff;border-color:#166534}
+.btn-s:hover{background:#14532d}
+.btn-d{color:var(--red);border-color:#fca5a5}
+.btn-d:hover{background:var(--red-l)}
+.btn-sm{padding:6px 14px;font-size:13px}
+
+/* ── action bar ── */
+.abar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)}
+.hint{font-size:12px;color:var(--muted);margin-left:auto}
+
+/* ── sig ── */
+.sigs{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1rem}
+.sigb{text-align:center;padding-top:12px;border-top:1px solid var(--border)}
+.sigb-name{font-size:14px;font-weight:500}
+.sigb-role{font-size:12px;color:var(--muted)}
+
+/* ── list ── */
+.ltool{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:1rem}
+.ltool input{flex:1;min-width:180px;max-width:300px;padding:9px 12px;border:1px solid var(--border);border-radius:var(--r-s);font-size:14px;font-family:'Sarabun',sans-serif}
+.ltool input:focus{outline:none;border-color:var(--blue)}
+.ltw{overflow-x:auto}
+table.lt{width:100%;border-collapse:collapse;font-size:14px;background:#fff;border-radius:var(--r);overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.07);min-width:560px}
+table.lt thead{background:var(--bg2)}
+table.lt th{padding:11px 14px;text-align:left;font-size:11px;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.03em}
+table.lt td{padding:12px 14px;border-bottom:1px solid #f3f4f6;vertical-align:middle}
+table.lt tbody tr:hover td{background:#f9fafb;cursor:pointer}
+table.lt tbody tr:last-child td{border-bottom:none}
+.empty{text-align:center;padding:3rem;color:var(--muted)}
+.empty-i{font-size:38px;margin-bottom:10px}
+
+/* ── toast ── */
+#toast{
+  position:fixed;bottom:24px;left:50%;
+  transform:translateX(-50%) translateY(80px);
+  background:#1f2937;color:#fff;padding:10px 20px;border-radius:10px;
+  font-size:14px;z-index:999;transition:transform .3s;white-space:nowrap;
+  box-shadow:0 4px 12px rgba(0,0,0,.2)
+}
+#toast.on{transform:translateX(-50%) translateY(0)}
+
+/* ── modal ── */
+.mbg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:center;justify-content:center;padding:1rem}
+.mbg.on{display:flex}
+.mbox{background:#fff;border-radius:16px;padding:1.5rem;width:100%;max-width:340px;box-shadow:0 20px 50px rgba(0,0,0,.2)}
+.mbox h3{font-size:16px;font-weight:600;margin-bottom:14px}
+.mbtns{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+
+/* ── print ── */
+@media print{
+  #s-login,.topbar,.tabbar,.abar,.addrow,.delbtn,#toast,.mbg{display:none!important}
+  #s-app{display:block!important}.page{display:none!important}#pg-form{display:block!important}
+  body{background:#fff}.wrap{padding:0;max-width:100%}
+  .card{box-shadow:none;border:1px solid #ccc;break-inside:avoid;margin-bottom:.75rem}
+  table.pt{min-width:unset}.tw{overflow:visible}
+  table.pt input{border:none;padding:3px;background:transparent}
+}
+@media(max-width:580px){
+  .fg{grid-template-columns:1fr}.sigs{grid-template-columns:1fr}
+  .wrap{padding:.75rem}.ugrid{grid-template-columns:1fr 1fr 1fr}
+  .login-box{padding:1.5rem 1.25rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ LOGIN ══════════════════ -->
+<div class="scr on" id="s-login">
+<div class="login-box">
+  <div class="lhd">
+    <div class="lhd-ico">🔧</div>
+    <h1>ระบบเสนอซ่อม</h1>
+    <p>ฝ่ายวิศวกรรมและซ่อมบำรุง</p>
+  </div>
+
+  <span class="sec-lbl">เลือกชื่อของคุณ</span>
+  <div class="ugrid" id="ugrid"><!-- JS --></div>
+
+  <button class="btn-login" id="btn-login" onclick="doLogin()" disabled>เข้าสู่ระบบ</button>
+
+  <div style="text-align:center;margin-top:1rem">
+    <button class="link-btn" onclick="toggleManage()">⚙ จัดการรายชื่อช่าง</button>
+  </div>
+
+  <div class="manage-panel" id="manage-panel">
+    <div id="user-rows"><!-- JS --></div>
+    <div class="add-user-row">
+      <input type="text" id="new-name" placeholder="ชื่อ-นามสกุลช่าง" onkeydown="if(event.key==='Enter')addUser()"/>
+      <button class="btn btn-p btn-sm" onclick="addUser()">+ เพิ่ม</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════ APP ══════════════════ -->
+<div class="scr" id="s-app">
+
+  <div class="topbar">
+    <span class="tb-title">ระบบเสนอเปลี่ยนอะไหล่</span>
+    <div class="tb-user" onclick="logout()">
+      <div class="tb-av" id="tb-av">?</div>
+      <div>
+        <div class="tb-name" id="tb-name">—</div>
+      </div>
+      <span class="tb-out">ออก</span>
+    </div>
+  </div>
+
+  <div class="tabbar">
+    <div class="tab on" onclick="goTab('form')" id="tab-form">กรอกฟอร์ม</div>
+    <div class="tab" onclick="goTab('list')" id="tab-list">รายการของฉัน</div>
+  </div>
+
+  <!-- ── FORM PAGE ── -->
+  <div class="page on" id="pg-form">
+  <div class="wrap">
+
+    <div class="card" style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:1rem 1.5rem">
+      <div>
+        <div style="font-size:17px;font-weight:700">แบบฟอร์มเสนอเปลี่ยนรายการอะไหล่
+          <span class="bdg bdg-b" id="fbadge" style="margin-left:8px;vertical-align:middle">ใหม่</span>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px">ฝ่ายวิศวกรรมและซ่อมบำรุง — Customer Service</div>
+      </div>
+      <div style="text-align:right">
+        <div id="hdr-dn" style="font-family:monospace;font-size:12px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;color:var(--muted)">M-____/__/______</div>
+        <div id="hdr-sv" style="font-size:11px;color:var(--muted);margin-top:4px"></div>
+      </div>
+    </div>
+
+    <!-- ข้อมูลทั่วไป -->
+    <div class="card">
+      <div class="card-ttl"><div class="dot db"></div>ข้อมูลทั่วไป</div>
+      <div class="fg">
+        <div class="fld"><label>เลขที่เอกสาร</label><input type="text" id="f-dn" placeholder="M-2026/03/000287" oninput="syncHdr()"/></div>
+        <div class="fld"><label>TICKET</label><input type="text" id="f-tk" placeholder="TICKET/1061"/></div>
+        <div class="fld"><label>วันที่</label><input type="date" id="f-dt"/></div>
+        <div class="fld"><label>อาการเช็ค</label><input type="text" id="f-ck" placeholder="เช่น 100%, ตามอาการ"/></div>
+        <div class="fld full"><label>รุ่นเครื่อง / อุปกรณ์</label><input type="text" id="f-md" placeholder="เช่น เครื่องบดเนื้อ รุ่น TK-32 (220V.)"/></div>
+        <div class="fld"><label>ช่างผู้เสนอ</label><input type="text" id="f-tc" readonly/></div>
+        <div class="fld"><label>ตำแหน่ง</label><input type="text" id="f-tp" placeholder="ช่างซ่อมบำรุง"/></div>
+      </div>
+    </div>
+
+    <!-- Table 1 -->
+    <div class="card">
+      <div class="card-ttl"><div class="dot db"></div>รายการอะไหล่เสนอซ่อมตามอาการ<span style="font-weight:400;font-size:12px;color:var(--muted);margin-left:6px">(มีผลต่อการใช้งาน)</span></div>
+      <div class="tw"><table class="pt"><thead><tr>
+        <th class="nc">#</th><th>รายการอะไหล่</th><th>สาเหตุ</th><th class="qc">จำนวน</th><th class="cc">อนุมัติ</th><th class="dc2"></th>
+      </tr></thead><tbody id="tb1"></tbody></table></div>
+      <button class="addrow" onclick="addRow('tb1')">+ เพิ่มรายการ</button>
+    </div>
+
+    <!-- Table 2 -->
+    <div class="card">
+      <div class="card-ttl"><div class="dot da"></div>รายการตรวจสอบพบอะไหล่ชำรุดเพิ่ม</div>
+      <div class="tw"><table class="pt"><thead><tr>
+        <th class="nc">#</th><th>รายการอะไหล่</th><th>สาเหตุ</th><th class="qc">จำนวน</th><th class="cc">อนุมัติ</th><th class="dc2"></th>
+      </tr></thead><tbody id="tb2"></tbody></table></div>
+      <button class="addrow" onclick="addRow('tb2')">+ เพิ่มรายการ</button>
+    </div>
+
+    <!-- Table 3 -->
+    <div class="card">
+      <div class="card-ttl"><div class="dot dg"></div>รายการอะไหล่ที่แนะนำให้แก้ไขหรือเปลี่ยน</div>
+      <div class="tw"><table class="pt"><thead><tr>
+        <th class="nc">#</th><th>รายการอะไหล่</th><th>สาเหตุ</th><th class="qc">จำนวน</th><th class="cc">อนุมัติ</th><th class="dc2"></th>
+      </tr></thead><tbody id="tb3"></tbody></table></div>
+      <button class="addrow" onclick="addRow('tb3')">+ เพิ่มรายการ</button>
+    </div>
+
+    <!-- หมายเหตุ -->
+    <div class="card">
+      <div class="card-ttl"><div class="dot dgr"></div>หมายเหตุ / อื่นๆ</div>
+      <div class="fld"><textarea id="f-nt" placeholder="เช่น เครื่องมีน้ำมันเกียร์ซึม..."></textarea></div>
+    </div>
+
+    <!-- ลายเซ็น -->
+    <div class="card">
+      <div class="card-ttl"><div class="dot dgr"></div>ลายเซ็น</div>
+      <div class="sigs">
+        <div class="sigb">
+          <div style="min-height:50px"></div>
+          <div class="sigb-name" id="sig-tc">ผู้เสนอ (……………………)</div>
+          <div class="sigb-role">ตำแหน่งช่างซ่อมบำรุง</div>
+        </div>
+        <div class="sigb">
+          <div style="min-height:50px"></div>
+          <div class="sigb-name">ผู้อนุมัติ (……………………)</div>
+          <div class="sigb-role">แผนก Customer Service</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="abar">
+      <button class="btn btn-p" onclick="saveForm()">บันทึก</button>
+      <button class="btn" onclick="newForm()">ฟอร์มใหม่</button>
+      <button class="btn btn-s" onclick="doPrint()">🖨 พิมพ์ / PDF</button>
+      <button class="btn btn-d btn-sm" id="btn-del" style="display:none" onclick="delForm()">ลบ</button>
+      <span class="hint" id="hint"></span>
+    </div>
+
+  </div>
+  </div><!-- /pg-form -->
+
+  <!-- ── LIST PAGE ── -->
+  <div class="page" id="pg-list">
+  <div class="wrap">
+    <div class="ltool">
+      <input type="text" id="srch" placeholder="ค้นหาเลขที่ / รุ่นเครื่อง..." oninput="renderList()"/>
+      <button class="btn btn-p btn-sm" onclick="goTab('form');newForm()">+ ฟอร์มใหม่</button>
+    </div>
+    <div class="ltw">
+      <table class="lt">
+        <thead><tr>
+          <th>เลขที่เอกสาร</th><th>รุ่นเครื่อง</th><th>วันที่</th><th>สถานะ</th>
+        </tr></thead>
+        <tbody id="lbody"></tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+
+</div><!-- /s-app -->
+
+<!-- confirm delete modal -->
+<div class="mbg" id="m-del">
+  <div class="mbox">
+    <h3>ยืนยันการลบ</h3>
+    <p style="font-size:14px;color:var(--muted)">ต้องการลบรายการนี้ใช่ไหม?</p>
+    <div class="mbtns">
+      <button class="btn btn-sm" onclick="closeM()">ยกเลิก</button>
+      <button class="btn btn-d btn-sm" onclick="confirmDel()">ลบ</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<datalist id="cl">
+  <option value="เสื่อมสภาพ"><option value="ชำรุดเสียหาย">
+  <option value="มีกลิ่นไหม้ เสียงดัง"><option value="ไม่มีผลต่อการใช้งาน">
+  <option value="มีผลต่อการใช้งาน"><option value="เพื่อป้องกัน">
+  <option value="ตามระยะเวลา"><option value="สายไฟเสียหาย"><option value="น้ำเข้า">
+</datalist>
+
+<script>
+/* ─── STORAGE KEYS ─── */
+const K_USERS = 'rf_users';
+const K_FORMS = id => 'rf_forms_' + id; // forms per user
+
+/* ─── STATE ─── */
+let users = [], me = null, myForms = [], curId = null, selUser = null;
+let toastT;
+
+/* ═══ BOOT ═══ */
+window.onload = () => {
+  users = loadUsers();
+  buildGrid();
+  document.getElementById('f-dt').value = isoToday();
+};
+
+function isoToday(){ return new Date().toISOString().split('T')[0]; }
+
+/* ═══ USERS STORAGE ═══ */
+function loadUsers(){
+  const raw = localStorage.getItem(K_USERS);
+  if(raw) try{ return JSON.parse(raw); }catch{}
+  // defaults
+  const def = [
+    {id:'u1', name:'ฐปน แจ่มกระจ่าง'},
+    {id:'u2', name:'สมชาย ใจดี'},
+    {id:'u3', name:'วิชัย มั่นคง'},
+  ];
+  saveUsersLS(def);
+  return def;
+}
+function saveUsersLS(arr){ localStorage.setItem(K_USERS, JSON.stringify(arr)); }
+
+/* ═══ BUILD LOGIN GRID ═══ */
+function buildGrid(){
+  const grid = document.getElementById('ugrid');
+  grid.innerHTML = '';
+  selUser = null;
+  document.getElementById('btn-login').disabled = true;
+  users.forEach(u => {
+    const initials = u.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    const div = document.createElement('div');
+    div.className = 'ucard';
+    div.dataset.uid = u.id;
+    div.innerHTML = `<div class="uav">${initials}</div><div class="uname">${u.name}</div>`;
+    div.onclick = () => {
+      document.querySelectorAll('.ucard').forEach(c=>c.classList.remove('sel'));
+      div.classList.add('sel');
+      selUser = u;
+      document.getElementById('btn-login').disabled = false;
+    };
+    grid.appendChild(div);
+  });
+  buildManageRows();
+}
+
+/* ═══ MANAGE USERS ═══ */
+function toggleManage(){
+  document.getElementById('manage-panel').classList.toggle('on');
+}
+function buildManageRows(){
+  const wrap = document.getElementById('user-rows');
+  wrap.innerHTML = users.map(u => `
+    <div class="user-row-m">
+      <span>${u.name}</span>
+      <button class="del-u" onclick="removeUser('${u.id}')" title="ลบ">×</button>
+    </div>`).join('');
+}
+function addUser(){
+  const inp = document.getElementById('new-name');
+  const name = inp.value.trim();
+  if(!name){ toast('กรุณาระบุชื่อ'); return; }
+  if(users.find(u=>u.name===name)){ toast('มีชื่อนี้แล้ว'); return; }
+  users.push({id:'u'+Date.now(), name});
+  saveUsersLS(users);
+  inp.value='';
+  buildGrid();
+  toast('เพิ่มชื่อแล้ว: ' + name);
+}
+function removeUser(id){
+  if(users.length<=1){ toast('ต้องมีอย่างน้อย 1 คน'); return; }
+  users = users.filter(u=>u.id!==id);
+  saveUsersLS(users);
+  buildGrid();
+}
+
+/* ═══ LOGIN / LOGOUT ═══ */
+function doLogin(){
+  if(!selUser) return;
+  me = selUser;
+  myForms = loadMyForms();
+  // update topbar
+  const initials = me.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  document.getElementById('tb-av').textContent = initials;
+  document.getElementById('tb-name').textContent = me.name;
+  document.getElementById('f-tc').value = me.name;
+  // switch screen
+  document.getElementById('s-login').classList.remove('on');
+  document.getElementById('s-app').classList.add('on');
+  newForm();
+}
+function logout(){
+  me = null; curId = null; myForms = [];
+  document.getElementById('s-app').classList.remove('on');
+  document.getElementById('s-login').classList.add('on');
+  document.querySelectorAll('.ucard').forEach(c=>c.classList.remove('sel'));
+  document.getElementById('btn-login').disabled = true;
+  document.getElementById('manage-panel').classList.remove('on');
+}
+
+/* ═══ FORMS STORAGE (per user) ═══ */
+function loadMyForms(){
+  try{ return JSON.parse(localStorage.getItem(K_FORMS(me.id))||'[]'); }catch{ return []; }
+}
+function saveMyForms(){ localStorage.setItem(K_FORMS(me.id), JSON.stringify(myForms)); }
+
+/* ═══ TABS ═══ */
+function goTab(name){
+  ['form','list'].forEach(n=>{
+    document.getElementById('tab-'+n).classList.toggle('on',n===name);
+    document.getElementById('pg-'+n).classList.toggle('on',n===name);
+  });
+  if(name==='list') renderList();
+}
+
+/* ═══ ROWS ═══ */
+function addRow(id){
+  const tb = document.getElementById(id);
+  const n = tb.rows.length+1;
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="nc">${n}</td>
+    <td><input type="text" placeholder="ระบุรายการอะไหล่"/></td>
+    <td><input type="text" list="cl" placeholder="สาเหตุ"/></td>
+    <td class="qc"><input type="number" value="1" min="1" style="text-align:center"/></td>
+    <td class="cc" style="text-align:center"><input type="checkbox" class="apchk"/></td>
+    <td class="dc2"><button class="delbtn" onclick="this.closest('tr').remove();reIdx('${id}')">×</button></td>`;
+  tb.appendChild(tr);
+}
+function reIdx(id){ Array.from(document.getElementById(id).rows).forEach((r,i)=>r.cells[0].textContent=i+1); }
+function getRows(id){
+  return Array.from(document.getElementById(id).rows).map(r=>({
+    item:r.cells[1].querySelector('input').value,
+    cause:r.cells[2].querySelector('input').value,
+    qty:r.cells[3].querySelector('input').value,
+    approved:r.cells[4].querySelector('input').checked
+  }));
+}
+function setRows(id, rows){
+  document.getElementById(id).innerHTML='';
+  if(!rows?.length){ addRow(id); return; }
+  rows.forEach(()=>addRow(id));
+  Array.from(document.getElementById(id).rows).forEach((tr,i)=>{
+    const row=rows[i]; if(!row)return;
+    tr.cells[1].querySelector('input').value=row.item||'';
+    tr.cells[2].querySelector('input').value=row.cause||'';
+    tr.cells[3].querySelector('input').value=row.qty||1;
+    tr.cells[4].querySelector('input').checked=row.approved||false;
+  });
+}
+
+/* ═══ FORM ═══ */
+function gv(id){ return document.getElementById(id).value; }
+function sv(id,v){ document.getElementById(id).value=v||''; }
+
+function getFormData(){
+  return {
+    docno:gv('f-dn'), ticket:gv('f-tk'), date:gv('f-dt'),
+    checktype:gv('f-ck'), model:gv('f-md'),
+    tech:me?.name||'', techpos:gv('f-tp'), notes:gv('f-nt'),
+    repairItems:getRows('tb1'), foundItems:getRows('tb2'), recommendItems:getRows('tb3'),
+    savedAt:new Date().toISOString(),
+  };
+}
+function fillForm(d){
+  sv('f-dn',d.docno); sv('f-tk',d.ticket); sv('f-dt',d.date||isoToday());
+  sv('f-ck',d.checktype); sv('f-md',d.model);
+  document.getElementById('f-tc').value = d.tech||me?.name||'';
+  sv('f-tp',d.techpos); sv('f-nt',d.notes);
+  setRows('tb1',d.repairItems); setRows('tb2',d.foundItems); setRows('tb3',d.recommendItems);
+  syncHdr(); updateSig(d.tech||me?.name);
+  if(d.savedAt){
+    const dt=new Date(d.savedAt);
+    document.getElementById('hdr-sv').textContent = `บันทึกเมื่อ ${dt.toLocaleDateString('th-TH')} ${dt.toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'})}`;
+  }
+}
+function syncHdr(){ const v=gv('f-dn'); document.getElementById('hdr-dn').textContent=v||'M-____/__/______'; }
+function updateSig(name){ document.getElementById('sig-tc').textContent=name?`ผู้เสนอ (${name})`:'ผู้เสนอ (……………………)'; }
+function setBadge(txt,cls){ const b=document.getElementById('fbadge'); b.textContent=txt; b.className='bdg '+cls; }
+
+function saveForm(){
+  const data = getFormData();
+  if(curId){
+    const idx = myForms.findIndex(f=>f.id===curId);
+    if(idx>-1) myForms[idx]={...data, id:curId};
+    else myForms.push({...data, id:curId});
+  } else {
+    curId = 'f'+Date.now();
+    myForms.push({...data, id:curId});
+  }
+  saveMyForms();
+  syncHdr(); updateSig(data.tech);
+  const dt = new Date(data.savedAt);
+  document.getElementById('hdr-sv').textContent = `บันทึกเมื่อ ${dt.toLocaleDateString('th-TH')} ${dt.toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'})}`;
+  document.getElementById('hint').textContent = `บันทึกล่าสุด ${dt.toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'})}`;
+  document.getElementById('btn-del').style.display='';
+  setBadge('บันทึกแล้ว','bdg-g');
+  toast('บันทึกสำเร็จ ✓');
+}
+function newForm(){
+  curId=null;
+  ['f-dn','f-tk','f-ck','f-md','f-tp','f-nt'].forEach(id=>sv(id,''));
+  document.getElementById('f-dt').value=isoToday();
+  document.getElementById('f-tc').value=me?.name||'';
+  ['tb1','tb2','tb3'].forEach(id=>{ document.getElementById(id).innerHTML=''; addRow(id); });
+  syncHdr(); updateSig(me?.name);
+  setBadge('ใหม่','bdg-b');
+  document.getElementById('btn-del').style.display='none';
+  document.getElementById('hint').textContent='';
+  document.getElementById('hdr-sv').textContent='';
+}
+function delForm(){ document.getElementById('m-del').classList.add('on'); }
+function closeM(){ document.getElementById('m-del').classList.remove('on'); }
+function confirmDel(){
+  if(!curId){ closeM(); return; }
+  myForms = myForms.filter(f=>f.id!==curId);
+  saveMyForms();
+  closeM(); newForm(); renderList();
+  toast('ลบแล้ว');
+}
+function doPrint(){ saveForm(); setTimeout(()=>window.print(),300); }
+
+/* ═══ LIST ═══ */
+function renderList(){
+  const q=(document.getElementById('srch').value||'').toLowerCase();
+  const filtered = [...myForms].filter(f=>
+    (f.docno||'').toLowerCase().includes(q)||(f.model||'').toLowerCase().includes(q)
+  ).sort((a,b)=>new Date(b.savedAt||0)-new Date(a.savedAt||0));
+  const tbody = document.getElementById('lbody');
+  if(!filtered.length){
+    tbody.innerHTML=`<tr><td colspan="4"><div class="empty"><div class="empty-i">📋</div>ยังไม่มีรายการ</div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = filtered.map(f=>{
+    const d = f.date ? new Date(f.date).toLocaleDateString('th-TH') : '-';
+    const b = `<span class="bdg bdg-b">ร่าง</span>`;
+    return `<tr onclick="openForm('${f.id}')">
+      <td><strong>${f.docno||'-'}</strong><br><small style="color:var(--muted)">${f.ticket||''}</small></td>
+      <td>${f.model||'-'}</td>
+      <td>${d}</td>
+      <td>${b}</td>
+    </tr>`;
+  }).join('');
+}
+function openForm(id){
+  const f = myForms.find(x=>x.id===id);
+  if(!f) return;
+  curId=f.id;
+  fillForm(f);
+  setBadge('แก้ไข','bdg-a');
+  document.getElementById('btn-del').style.display='';
+  goTab('form');
+  window.scrollTo(0,0);
+}
+
+/* ═══ TOAST ═══ */
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.classList.add('on');
+  clearTimeout(toastT);
+  toastT=setTimeout(()=>el.classList.remove('on'),2500);
+}
+</script>
+</body>
+</html>
