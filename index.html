@@ -3,17 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>แบบฟอร์มเสนอซ่อม</title>
+<title>Kitchenmall — แบบฟอร์มเสนอซ่อม</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap');
 :root{
-  --blue:#1a56db;--blue-d:#1241a8;--blue-l:#e8f0fe;
+  --blue:#9b1c1c;--blue-d:#7f1d1d;--blue-l:#fef2f2;
   --green:#166534;--green-l:#dcfce7;
   --amber:#92400e;--amber-l:#fef3c7;
   --red:#dc2626;--red-l:#fee2e2;
-  --border:#e5e7eb;--bg:#f3f4f6;--bg2:#f9fafb;
+  --border:#e5e7eb;--bg:#f9f5f5;--bg2:#fdf5f5;
   --text:#111827;--muted:#6b7280;
   --r:10px;--r-s:7px;
+  --brand:#9b1c1c;--brand-d:#7f1d1d;--brand-l:#fef2f2;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;min-height:100vh}
@@ -25,7 +26,7 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);fon
 /* ══════════ LOGIN ══════════ */
 #s-login{
   align-items:center;justify-content:center;padding:1.5rem;
-  background:linear-gradient(150deg,#1e3a8a 0%,#1d4ed8 55%,#3b82f6 100%)
+  background:linear-gradient(150deg,#450a0a 0%,#7f1d1d 55%,#991b1b 100%)
 }
 .login-box{
   background:#fff;border-radius:20px;padding:2rem 1.75rem;
@@ -50,7 +51,7 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);fon
   padding:1rem .75rem;text-align:center;cursor:pointer;
   transition:border-color .15s,background .15s,transform .1s;background:#fff
 }
-.ucard:hover{border-color:#93c5fd;background:var(--blue-l);transform:translateY(-2px)}
+.ucard:hover{border-color:#fca5a5;background:var(--blue-l);transform:translateY(-2px)}
 .ucard.sel{border-color:var(--blue);background:var(--blue-l)}
 .ucard:active{transform:scale(.97)}
 .uav{
@@ -75,7 +76,7 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);fon
   transition:background .15s;margin-top:1rem
 }
 .btn-login:hover{background:var(--blue-d)}
-.btn-login:disabled{background:#93c5fd;cursor:not-allowed}
+.btn-login:disabled{background:#fca5a5;cursor:not-allowed}
 
 /* manage users panel */
 .manage-panel{
@@ -158,7 +159,7 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);fon
   font-family:'Sarabun',sans-serif;font-size:14px;color:var(--text);
   background:#fff;transition:border-color .15s,box-shadow .15s;-webkit-appearance:none
 }
-.fld input:focus,.fld select:focus,.fld textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.12)}
+.fld input:focus,.fld select:focus,.fld textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(155,28,28,.12)}
 .fld textarea{resize:vertical;min-height:70px}
 .fld input[readonly]{background:var(--bg2);color:var(--muted)}
 
@@ -170,7 +171,7 @@ table.pt td{padding:5px 6px;border-bottom:1px solid #f3f4f6;vertical-align:middl
 table.pt tbody tr:hover td{background:#f9fafb}
 table.pt input{border:1px solid transparent;border-radius:6px;padding:5px 8px;font-size:13px;background:transparent;font-family:'Sarabun',sans-serif;color:var(--text);width:100%}
 table.pt input:hover{border-color:var(--border)}
-table.pt input:focus{outline:none;border-color:var(--blue);background:#fff;box-shadow:0 0 0 2px rgba(26,86,219,.1)}
+table.pt input:focus{outline:none;border-color:var(--blue);background:#fff;box-shadow:0 0 0 2px rgba(155,28,28,.1)}
 .nc{width:28px;color:var(--muted);font-size:11px;text-align:center}
 .qc{width:64px}
 .cc{width:74px;text-align:center}
@@ -181,7 +182,7 @@ table.pt input:focus{outline:none;border-color:var(--blue);background:#fff;box-s
 .addrow{
   display:inline-flex;align-items:center;gap:6px;margin-top:10px;
   font-size:12px;font-weight:500;color:var(--blue);background:none;
-  border:1px dashed #93c5fd;border-radius:var(--r-s);
+  border:1px dashed #fca5a5;border-radius:var(--r-s);
   padding:5px 14px;cursor:pointer;transition:background .15s;
   font-family:'Sarabun',sans-serif
 }
@@ -251,12 +252,92 @@ table.lt tbody tr:last-child td{border-bottom:none}
 
 /* ── print ── */
 @media print{
-  #s-login,.topbar,.tabbar,.abar,.addrow,.delbtn,#toast,.mbg{display:none!important}
-  #s-app{display:block!important}.page{display:none!important}#pg-form{display:block!important}
-  body{background:#fff}.wrap{padding:0;max-width:100%}
-  .card{box-shadow:none;border:1px solid #ccc;break-inside:avoid;margin-bottom:.75rem}
-  table.pt{min-width:unset}.tw{overflow:visible}
-  table.pt input{border:none;padding:3px;background:transparent}
+  @page{size:A4 portrait;margin:8mm 10mm 10mm 10mm}
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+
+  /* hide UI chrome */
+  #s-login,.topbar,.tabbar,.abar,.addrow,.delbtn,#toast,.mbg,
+  .btn,.btn-p,.btn-s,.btn-d,.bdg{display:none!important}
+
+  /* show app + form only */
+  #s-app{display:block!important;min-height:unset}
+  .page{display:none!important}
+  #pg-form{display:block!important}
+  body{background:#fff;font-size:11px;line-height:1.4}
+  .wrap{padding:0;max-width:100%;margin:0}
+
+  /* compress all cards into inline sections */
+  .card{
+    box-shadow:none!important;
+    border:1px solid #e0e0e0!important;
+    border-radius:5px!important;
+    margin-bottom:4px!important;
+    padding:.5rem .75rem!important;
+    break-inside:avoid;
+  }
+  .card-ttl{font-size:11px!important;margin-bottom:.4rem!important;font-weight:600}
+  .dot{width:7px!important;height:7px!important}
+
+  /* letterhead — keep colors, compact height */
+  .km-header{
+    background:#9b1c1c!important;
+    padding:.6rem .75rem!important;
+  }
+  .km-header div[style*="font-size:22px"]{font-size:16px!important}
+  .km-header div[style*="font-size:12px"]{font-size:10px!important}
+  .km-header div[style*="font-size:13px"]{font-size:11px!important}
+  .km-header div[style*="font-size:11px"]{font-size:10px!important}
+  .km-header div[style*="width:48px"]{width:36px!important;height:36px!important;font-size:13px!important}
+  .km-stripe{background:#7f1d1d!important;height:3px!important}
+
+  /* header doc info row */
+  .card div[style*="padding:1rem 1.5rem"]{padding:.4rem .75rem!important}
+  .card div[style*="font-size:16px"]{font-size:13px!important}
+  .card div[style*="font-size:12px"]{font-size:10px!important}
+
+  /* form fields grid — tighter */
+  .fg{gap:4px!important;grid-template-columns:1fr 1fr!important}
+  .fld label{font-size:9px!important;margin-bottom:2px!important}
+  .fld input,.fld select,.fld textarea{
+    padding:3px 6px!important;font-size:11px!important;
+    border:1px solid #d0d0d0!important;border-radius:3px!important;
+  }
+  .fld textarea{min-height:30px!important}
+  .fld input[readonly]{background:#f5f5f5!important}
+
+  /* parts tables — compact */
+  .tw{overflow:visible!important}
+  table.pt{min-width:unset!important;font-size:10px!important}
+  table.pt th{padding:3px 5px!important;font-size:9px!important;background:#f8f8f8}
+  table.pt td{padding:2px 5px!important;border-bottom:1px solid #f0f0f0!important}
+  table.pt input{
+    border:none!important;padding:1px 3px!important;
+    background:transparent!important;font-size:10px!important;
+  }
+  .nc{width:18px!important}.qc{width:40px!important}.cc{width:50px!important}
+  .apchk{width:12px!important;height:12px!important}
+
+  /* signature */
+  .sigs{gap:.75rem!important;margin-top:.5rem!important}
+  .sigb{padding-top:8px!important}
+  .sigb div[style*="min-height:50px"]{min-height:30px!important}
+  .sigb-name{font-size:11px!important}
+  .sigb-role{font-size:9px!important}
+
+  /* badge shown in print */
+  #fbadge{display:inline-block!important;font-size:9px!important;padding:1px 6px!important}
+
+  /* footer strip */
+  #pg-form .wrap::after{
+    content:'Kitchenmall — Kitchen Equipment & Service Center';
+    display:block;
+    text-align:center;
+    font-size:8px;
+    color:#aaa;
+    margin-top:6px;
+    padding-top:4px;
+    border-top:1px solid #eee;
+  }
 }
 @media(max-width:580px){
   .fg{grid-template-columns:1fr}.sigs{grid-template-columns:1fr}
@@ -271,9 +352,9 @@ table.lt tbody tr:last-child td{border-bottom:none}
 <div class="scr on" id="s-login">
 <div class="login-box">
   <div class="lhd">
-    <div class="lhd-ico">🔧</div>
-    <h1>ระบบเสนอซ่อม</h1>
-    <p>ฝ่ายวิศวกรรมและซ่อมบำรุง</p>
+    <div class="lhd-ico" style="background:#fef2f2;font-size:26px;font-weight:800;color:#9b1c1c;letter-spacing:-1px">KM</div>
+    <h1 style="color:#9b1c1c;font-size:22px;letter-spacing:.5px">Kitchenmall</h1>
+    <p>ระบบเสนอซ่อม — ฝ่ายวิศวกรรมและซ่อมบำรุง</p>
   </div>
 
   <span class="sec-lbl">เลือกชื่อของคุณ</span>
@@ -299,7 +380,13 @@ table.lt tbody tr:last-child td{border-bottom:none}
 <div class="scr" id="s-app">
 
   <div class="topbar">
-    <span class="tb-title">ระบบเสนอเปลี่ยนอะไหล่</span>
+    <div style="display:flex;align-items:center;gap:10px;flex:1">
+      <div style="width:30px;height:30px;background:rgba(255,255,255,.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;letter-spacing:-.5px;flex-shrink:0">KM</div>
+      <div>
+        <div class="tb-title" style="font-size:14px;line-height:1.2">Kitchenmall</div>
+        <div style="font-size:11px;opacity:.65;line-height:1.2">ระบบเสนอเปลี่ยนอะไหล่</div>
+      </div>
+    </div>
     <div class="tb-user" onclick="logout()">
       <div class="tb-av" id="tb-av">?</div>
       <div>
@@ -318,16 +405,33 @@ table.lt tbody tr:last-child td{border-bottom:none}
   <div class="page on" id="pg-form">
   <div class="wrap">
 
-    <div class="card" style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:1rem 1.5rem">
-      <div>
-        <div style="font-size:17px;font-weight:700">แบบฟอร์มเสนอเปลี่ยนรายการอะไหล่
-          <span class="bdg bdg-b" id="fbadge" style="margin-left:8px;vertical-align:middle">ใหม่</span>
+    <!-- Kitchenmall letterhead -->
+    <div class="card" style="padding:0;overflow:hidden;margin-bottom:1rem">
+      <div class="km-header" style="background:#9b1c1c;padding:1.1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:14px">
+          <div style="width:48px;height:48px;background:rgba(255,255,255,.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#fff;letter-spacing:-1px;flex-shrink:0">KM</div>
+          <div>
+            <div style="font-size:22px;font-weight:800;color:#fff;letter-spacing:.5px;line-height:1.1">Kitchenmall</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.75);margin-top:1px">Kitchen Equipment &amp; Service Center</div>
+          </div>
         </div>
-        <div style="font-size:12px;color:var(--muted);margin-top:2px">ฝ่ายวิศวกรรมและซ่อมบำรุง — Customer Service</div>
+        <div style="text-align:right">
+          <div style="font-size:13px;font-weight:600;color:#fff">ฝ่ายวิศวกรรมและซ่อมบำรุง</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.7);margin-top:2px">Engineering &amp; Maintenance Dept.</div>
+        </div>
       </div>
-      <div style="text-align:right">
-        <div id="hdr-dn" style="font-family:monospace;font-size:12px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;color:var(--muted)">M-____/__/______</div>
-        <div id="hdr-sv" style="font-size:11px;color:var(--muted);margin-top:4px"></div>
+      <div class="km-stripe" style="background:#7f1d1d;height:4px"></div>
+      <div style="padding:1rem 1.5rem;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px">
+        <div>
+          <div style="font-size:16px;font-weight:700;color:#7f1d1d">แบบฟอร์มเสนอเปลี่ยนรายการอะไหล่
+            <span class="bdg bdg-b" id="fbadge" style="margin-left:8px;vertical-align:middle">ใหม่</span>
+          </div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px">Parts Replacement Proposal Form — Customer Service</div>
+        </div>
+        <div style="text-align:right">
+          <div id="hdr-dn" style="font-family:monospace;font-size:12px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;color:var(--muted)">M-____/__/______</div>
+          <div id="hdr-sv" style="font-size:11px;color:var(--muted);margin-top:4px"></div>
+        </div>
       </div>
     </div>
 
