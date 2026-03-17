@@ -554,7 +554,9 @@ table.lt tbody tr:last-child td{border-bottom:none}
 <script>
 /* ─── STORAGE KEYS ─── */
 const K_USERS = 'rf_users';
-const K_FORMS = id => 'rf_forms_' + id; // forms per user
+const K_FORMS = id => 'rf_forms_' + id;
+const K_VER   = 'rf_ver';
+const VER     = '2';
 
 /* ─── STATE ─── */
 let users = [], me = null, myForms = [], curId = null, selUser = null;
@@ -562,6 +564,11 @@ let toastT;
 
 /* ═══ BOOT ═══ */
 window.onload = () => {
+  // reset user list if version changed
+  if(localStorage.getItem(K_VER) !== VER){
+    localStorage.removeItem(K_USERS);
+    localStorage.setItem(K_VER, VER);
+  }
   users = loadUsers();
   buildGrid();
   document.getElementById('f-dt').value = isoToday();
@@ -573,11 +580,12 @@ function isoToday(){ return new Date().toISOString().split('T')[0]; }
 function loadUsers(){
   const raw = localStorage.getItem(K_USERS);
   if(raw) try{ return JSON.parse(raw); }catch{}
-  // defaults
   const def = [
-    {id:'u1', name:'ฐปน แจ่มกระจ่าง'},
-    {id:'u2', name:'สมชาย ใจดี'},
-    {id:'u3', name:'วิชัย มั่นคง'},
+    {id:'u1', name:'วรยศ เรืองปราชญ์',  nick:'บิ้ล'},
+    {id:'u2', name:'ฐปน แจ่มกระจ่าง',   nick:'แจ็ค'},
+    {id:'u3', name:'พัทธพล สีวลี',       nick:'พล'},
+    {id:'u4', name:'ธนบูรณ์ วรรณสาย',    nick:'แฟนต้า'},
+    {id:'u5', name:'ณัฐวุฒิ น้อยเจริญ',  nick:'โอ๊ต'},
   ];
   saveUsersLS(def);
   return def;
@@ -591,11 +599,15 @@ function buildGrid(){
   selUser = null;
   document.getElementById('btn-login').disabled = true;
   users.forEach(u => {
-    const initials = u.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    const nick = u.nick || u.name.split(' ')[0];
+    const initials = nick.slice(0,2).toUpperCase();
     const div = document.createElement('div');
     div.className = 'ucard';
     div.dataset.uid = u.id;
-    div.innerHTML = `<div class="uav">${initials}</div><div class="uname">${u.name}</div>`;
+    div.innerHTML = `
+      <div class="uav">${initials}</div>
+      <div class="uname">${nick}</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:1px;line-height:1.3">${u.name}</div>`;
     div.onclick = () => {
       document.querySelectorAll('.ucard').forEach(c=>c.classList.remove('sel'));
       div.classList.add('sel');
