@@ -502,7 +502,7 @@ table.lt tbody tr:last-child td{border-bottom:none}
     <div class="abar">
       <button class="btn btn-p" onclick="saveForm()">บันทึก</button>
       <button class="btn" onclick="newForm()">ฟอร์มใหม่</button>
-      <button class="btn btn-s" onclick="doPrint()">🖨 พิมพ์ / PDF</button>
+      <button class="btn btn-s" onclick="doPrint()">⬇ บันทึก PDF</button>
       <button class="btn btn-d btn-sm" id="btn-del" style="display:none" onclick="delForm()">ลบ</button>
       <span class="hint" id="hint"></span>
     </div>
@@ -793,7 +793,99 @@ function confirmDel(){
   closeM(); newForm(); renderList();
   toast('ลบแล้ว');
 }
-function doPrint(){ saveForm(); setTimeout(()=>window.print(),300); }
+async function doPrint(){
+  saveForm();
+  toast('กำลังสร้าง PDF...');
+  await new Promise(r=>setTimeout(r,400));
+
+  // load libraries on demand
+  if(!window.html2canvas){
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
+  }
+  if(!window.jspdf){
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+  }
+
+  try {
+    // temporarily show print view
+    const wrap = document.getElementById('pg-form').querySelector('.wrap');
+    const abar = wrap.querySelector('.abar');
+    const addrows = wrap.querySelectorAll('.addrow');
+    const delbtns = wrap.querySelectorAll('.delbtn');
+    const badge = document.getElementById('fbadge');
+
+    // hide UI-only elements
+    abar.style.display='none';
+    addrows.forEach(b=>b.style.display='none');
+    delbtns.forEach(b=>b.style.display='none');
+    badge.style.display='none';
+
+    // snapshot the form
+    const canvas = await html2canvas(wrap, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: '#ffffff',
+      logging: false,
+      windowWidth: 794,
+    });
+
+    // restore
+    abar.style.display='';
+    addrows.forEach(b=>b.style.display='');
+    delbtns.forEach(b=>b.style.display='');
+    badge.style.display='';
+
+    // build PDF (A4)
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+    const pdfW = pdf.internal.pageSize.getWidth();
+    const pdfH = pdf.internal.pageSize.getHeight();
+    const margin = 8;
+    const usableW = pdfW - margin*2;
+    const imgW = canvas.width;
+    const imgH = canvas.height;
+    const ratio = usableW / (imgW * 0.264583); // px to mm
+    const scaledH = imgH * 0.264583 * ratio;
+
+    const pageH = pdfH - margin*2;
+    let yPos = 0;
+    let page = 1;
+
+    while(yPos < scaledH) {
+      if(page > 1) pdf.addPage();
+      const srcY = yPos / ratio / 0.264583;
+      const srcH = Math.min(pageH / ratio / 0.264583, imgH - srcY);
+      const sliceCanvas = document.createElement('canvas');
+      sliceCanvas.width = imgW;
+      sliceCanvas.height = srcH;
+      const ctx = sliceCanvas.getContext('2d');
+      ctx.drawImage(canvas, 0, srcY, imgW, srcH, 0, 0, imgW, srcH);
+      const imgData = sliceCanvas.toDataURL('image/jpeg', 0.95);
+      const sliceH = srcH * 0.264583 * ratio;
+      pdf.addImage(imgData, 'JPEG', margin, margin, usableW, sliceH);
+      yPos += pageH;
+      page++;
+    }
+
+    // filename
+    const docno = (gv('f-dn')||'repair').replace(/[\/\\:*?"<>|]/g,'-');
+    const dateStr = (gv('f-dt')||isoToday()).replace(/-/g,'');
+    pdf.save(`KM-${docno}-${dateStr}.pdf`);
+    toast('บันทึก PDF สำเร็จ ✓');
+
+  } catch(e) {
+    console.error(e);
+    toast('เกิดข้อผิดพลาด กรุณาลองใหม่');
+  }
+}
+
+function loadScript(src){
+  return new Promise((res,rej)=>{
+    const s=document.createElement('script');
+    s.src=src; s.onload=res; s.onerror=rej;
+    document.head.appendChild(s);
+  });
+}
 
 /* ═══ LIST ═══ */
 function renderList(){
